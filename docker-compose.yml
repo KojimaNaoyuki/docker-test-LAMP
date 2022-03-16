@@ -1,0 +1,30 @@
+# docker-composeファイル形式のバージョンを示す
+version: '3'
+
+services:
+  # webという名称のサービスを定義している
+  web-php:
+    # buildで指定されたディレクトリにあるDockerfileを使用する
+    build: ./web-php
+    # コンテナ名を明示的に指定する
+    container_name: web-php
+    # volumesでディレクトを指定することで、ローカルディレクトリとコンテナ内を同期できる
+    volumes:
+      - ./html:/var/www/html
+    # このサービスが公開するポート番号を指定する | ホスト側のポート番号:コンテナ内のポート番号 |
+    ports:
+      - "8080:80"
+    # depends_onでサービス間の依存関係を指定できる(dbコンテナが起動してからweb-phpコンテナが起動する)
+    depends_on:
+      - db
+
+  db:
+    # imageでDockerfileを使用せずにyml内で直接イメージを指定できる
+    image: mysql:5.7
+    # コンテナ名を明示的に指定する
+    container_name: db
+    volumes:
+      - ./mysql:/var/lib/mysql
+    # environmentで環境変数を定義する
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
