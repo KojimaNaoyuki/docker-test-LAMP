@@ -6,7 +6,7 @@ services:
   web-php:
     # buildで指定されたディレクトリにあるDockerfileを使用する
     build: ./web-php
-    # コンテナ名を明示的に指定する
+    # コンテナ名を指定する
     container_name: web-php
     # volumesでディレクトを指定することで、ローカルディレクトリとコンテナ内を同期できる
     volumes:
@@ -21,10 +21,8 @@ services:
   db:
     # imageでDockerfileを使用せずにyml内で直接イメージを指定できる
     image: mysql:5.7
-    # コンテナ名を明示的に指定する
+    # コンテナ名を指定する
     container_name: db
-    volumes:
-      - ./mysql:/var/lib/mysql
     # environmentで環境変数を定義する
     environment:
-      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=password
